@@ -1,0 +1,40 @@
+#dotnet tools
+
+#ENTITY FRAMEWORK CORE
+------------------------
+dotnet tool install --global dotnet-ef
+
+#REPORTGENERATOR
+-------------------------
+https://www.nuget.org/packages/ReportGenerator/
+https://www.nuget.org/packages/dotnet-reportgenerator-globaltool
+https://github.com/danielpalme/ReportGenerator
+
+#global cli coverlet
+dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+
+#local cli
+dotnet new tool-manifest
+dotnet tool install dotnet-reportgenerator-globaltool
+
+Usage:
+reportgenerator [options]
+tools\reportgenerator.exe [options]
+dotnet reportgenerator [options]
+
+
+#manifest
+
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-reportgenerator-globaltool": {
+      "version": "4.8.12",
+      "commands": [
+        "reportgenerator"
+      ]
+    }
+  }
+}

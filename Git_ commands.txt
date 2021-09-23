@@ -1,0 +1,143 @@
+﻿
+#GIT HOWTO
+https://githowto.com/pt-BR/setup
+
+#conta github
+https://github.com/Siscs
+siscsti@gmail.com Accgit@123
+
+   -------------------
+  | Working directory |
+   -------------------
+   GIT ADD ->
+   --------------------------
+  | staging area (Container) |
+   --------------------------
+   GT COMMIT ->
+   -------------------
+  | REPOSITORY        |
+   -------------------
+
+git version		# versao do git
+git init  		# cria repositorio pasta .git
+
+git status  	# lista situação dos arquivos 
+				# Cor Vermelho para adicionar para o container 
+				# Cor Verde para commitar 
+			
+git add file 		#Adiciona os arquivos para o staging area (container)
+git add -A ou --all #Adiciona todos os arquivos para o staging area (container)
+
+git commit -m "descricao do commit" #comita os arquivos para o repositorio.
+
+#BRANCH
+git branch					# Listas as branch
+git branch nome				# Cria nova branch
+git branch -d nome			# Remove  branch
+git branch -f new_local_branch_name upstream/remote_branch_name  # cria branch local com origin
+git branch -f dev origin/dev
+
+git checkout -b <new_branch> <remote repo name>/<new_branch>
+git checkout -b dev origin/dev
+git checkout nome_branch	# Aponta para nova branch
+git checkout master			# Aponta para a branch master
+git checkout -b nome_branch	# Cria a branch e aponta para nova branch
+
+git merge nomebranch		# faz merge com a branch atual ex: branch001 to master (estar na master)
+
+git log 			# Lista logs dos commits
+git log --oneline	# Lista os logs dos commits com id commit e mensagem
+git log --oneline --decorate # Lista os logs dos commits e mostra branch (HEAD) apontada ( cat /git/HEAD)
+git log --oneline --decorate --all # mostra todas as branchs
+git log --oneline --decorate --all # mostra logs com ramificacao em caso de divergemcia ( branch com e.txt  e master com f.txt)
+
+
+#STACH ( shelve )
+
+git checkout -b branch002  #criar e apontar branch
+echo h > h.txt
+git add -A
+git stash save "arquivo h.txt"
+git stash list  # lista os stach salvos
+git stash apply stash@{0} # restaura do stash
+git stash drop stash@{0} 	#  apaga do stash
+git stash pop # restaura e apaga da stash
+git stash branch branchxxx  #cria a branch apartir da stach
+
+git commit -m "add a"
+
+
+
+#REPOSITORIO REMOTO
+# CRIAR O REPOSITORIO NO GITHUB
+
+echo "# git_teste" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+
+#exemplo
+git remote add origin https://github.com/<repo owner>/<repo name>.git
+git push -u origin master
+
+git remote  # lista os repositorios remotos adicionados
+git remote add nome_repositorio_local https://github.com/Siscs/Nome_repositorio.git  # criar primeiro no github o repositorio
+git remote get-url nome_repositorio_local # retorna url do repositorio remoto
+git remote remove nome_repo # remove remote repositorio
+
+#PUSH -> ENVIAR PARA O REPOSITORIO REMOTO SERVER
+git push -u nome_repositorio_local nome_branch  # faz um push (envio) para o repositorio remoto
+git push repo_remoto repo_local -f  #força a atualizacao remota
+
+#PULL -> PUXAR/OBTER DO REMOTO REPOSITORIO SERVER
+git pull nome_repositorio_remoto nome_branch
+
+git fetch # Retorna somente atualizações e não faz merge
+
+git diff repo_local remote/repo_nome # Lista as diferencas (usar git merge para aplicar)
+
+#CLONE (CLONA REPOSITORIO)
+git clone url_repositorio_remoto nome_repositorio  #Cria a pasta e o repositorio local clonado
+
+
+#UNDO
+git checkout <arquivo> #undo arquivo (antes do git add (stage))
+git reset HEAD <arquivo> #undo quando esta em stage (git add .) antes do commit
+
+#UNDO COMMIT
+git revert HEAD --no-edit
+
+#ROLLBACK COMMIT
+
+git reset  # desfaz commit
+git reset --soft numero_commit # volta commit para o numero_comit informado
+git reset --mixed numero_commit ou git reset numero_commit (--mixed é default)  # volta o commit e tira da staging area (container)
+git reset --hard numero_commit # rollback em tudo apaga todas as alterações (volta para untracked).
+
+git reset --hard origin/master # rollback commit locais 
+
+
+#RECUPERAR ROLLBACK
+
+git reflog  # lista os rollbacks
+git reset --hard numero_comit (listado no reflog) 
+
+
+
+
+#Filename too long
+git config --system core.longpaths true
+
+
+#git hub push to repository
+git push --set-upstream origin unittests-cesar
+https://github.com/Siscs/git_teste.git
+
+
+git checkout -b incidentes/INC.18131
+git status
+git add .
+git status
+git commit -m "INC.18131 - Criação de API -  Novo método de autenticação da ACESSO DIGITAL"
+git status
+git push origin incidentes/INC.18131

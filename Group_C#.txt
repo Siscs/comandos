@@ -1,0 +1,47 @@
+[HttpPost]
+        public JsonResult ObterLogConciliacao(int aplicacaoId)
+        {
+            var query = _contexto.Log.AsQueryable();
+
+            var queryGroup = query.Where(p => p.AplicacaoId == aplicacaoId)
+                .GroupBy(g => new { g.Origem, g.Descricao })
+                .Select(p => new {
+                    p.Key.Origem,
+                    p.Key.Descricao,
+                    DataOrdenacao = p.Max(x => x.Data),
+                    Tipo = p.Max(x => (int)x.Tipo)
+                })
+                .OrderByDescending(o => o.DataOrdenacao)
+                .ToList();
+
+            // agrupa por origem e obtem maior data do log e concatena com o campo origem
+            var queryGroupOrigem = queryGroup
+                .GroupBy(g => g.Origem)
+                .Select(p => new
+                {
+                    Origem = p.Key,
+                    Logs = p.OrderByDescending(o => o.DataOrdenacao)
+                })
+                .Select(x => new 
+                { 
+                    x.Origem,
+                    OrigemComData = $"{x.Origem} - Ultimo log: { x.Logs.First().DataOrdenacao.ToString("dd/MM/yyyy HH:mm:ss")}",
+                    Logs = x.Logs.Select(z => new { z.Origem, z.Tipo, Data = z.DataOrdenacao.ToString("dd/MM/yyyy HH:mm:ss"), z.Descricao, Id = Guid.NewGuid() })
+                })
+                .OrderBy(o =>o.Origem).ToList();
+
+            //var ttt2 = from item in query
+            //           group item by new { item.Origem, item.Descricao }
+            //           into grp
+            //           select new
+            //           {
+            //               grp.Key.Origem,
+            //               grp.Key.Descricao,
+            //               Data = grp.Max(p => p.Data ),
+            //               Qtde = grp.Count(),
+            //               Items = grp.ToList()
+            //           };
+
+            return Json(queryGroupOrigem, JsonRequestBehavior.AllowGet);
+
+        }

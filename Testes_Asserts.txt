@@ -1,0 +1,114 @@
+#testes XUNIT
+
+// Collections
+
+// empty
+Assert.Empty(roomList);
+
+//test one item
+Assert.Single(list);
+
+Assert.Collection(list,
+                item => item.Description.Contains("ABC"),
+            );
+			
+Assert.Collection(list,
+                item => Assert.Equal(42, item),
+                item => Assert.Equal(2112, item)
+			);
+			
+Assert.All(list,
+                item =>  Assert.Contains(i.Description, "ABC")
+            );
+			
+
+
+[Fact]
+public void Enter_Room_Test()
+{
+	var roomList = CreateRoomList();
+	var roomId = roomList[0].Id.ToString();
+	_mockContext.Setup(c => c.ConnectionId).Returns(Guid.NewGuid().ToString());
+
+	//_mockClients.Setup(c => c.Groups(roomId)).Returns(_mockClientProxy.Object);
+	//
+	//_mockGroups.Setup(g => g.)
+
+	//_mockClientProxy.Setup(p => p.SendAsync(
+	//                        It.IsAny<string>(),
+	//                        It.IsAny<object>(),
+	//                        It.IsAny<CancellationToken>()))
+	//                        .Returns(Task.FromResult(0));
+									
+
+	_mockClients.Setup(c => c.Group(It.IsAny<string>())).Returns(_mockClientProxy.Object);
+
+	_mockRoomRepository.Setup(r => r.RoomsOpened()).Returns(roomList);
+
+	_roomHub.EnterRoom(roomId, "User Test", true, false);
+
+	_mockRoomRepository.Verify(m => m.RoomsOpened(), Times.Once);
+	_mockClients.Verify(clients => clients.Group(roomId), Times.Exactly(1));
+
+	//_roomHub.Clients.Clients("").SendAsync
+	//_roomHub.Clients.Group("").SendAsync
+
+	_mockClientProxy.Verify(
+		clientProxy => clientProxy.SendAsync("refreshRoomClient",
+						It.Is<object>(o => o != null),
+						default(CancellationToken)), Times.Once);
+
+
+	//_mockClientProxy.Verify(
+	//    clientProxy => clientProxy.SendAsync("refreshRoomClient", 
+	//                    It.Is<Room>(o => o.Id.ToString() == roomId ),
+	//                    default(CancellationToken)), Times.Once);
+}
+		
+		
+
+=======================		
+#REPORTGENERATOR
+=======================
+
+
+https://www.nuget.org/packages/ReportGenerator/
+https://www.nuget.org/packages/dotnet-reportgenerator-globaltool
+https://github.com/danielpalme/ReportGenerator
+
+Install-Package ReportGenerator -Version 4.8.12
+dotnet add package ReportGenerator --version 4.8.12
+
+ou: <PackageReference Include="ReportGenerator" Version="4.8.12" />
+
+#global cli coverlet
+dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+
+#local cli
+dotnet new tool-manifest
+dotnet tool install dotnet-reportgenerator-globaltool
+
+Usage:
+reportgenerator [options]
+tools\reportgenerator.exe [options]
+dotnet reportgenerator [options]
+
+
+dotnet tool run reportgenerator 
+
+
+
+
+
+// signalr
+https://www.codeproject.com/Articles/1266538/Testing-SignalR-Hubs-in-ASP-NET-Core-2-1
+
+
+POSTMAN 
+
+C:\Dados\Totvs\Projetos\Performance-Test-Artifacts
+
+node scripts/exec-collections.js --proj=performance --file=5
+node scripts/exec-collections.js --proj=goals --file=5
+node scripts/exec-collections.js --proj=general --file=5

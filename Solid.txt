@@ -1,0 +1,48 @@
+SOLID
+
+S - SRP Responsabilidade única
+	- Violação
+		- criar classe com várias responsabilidades como:
+		- Gravar no banco 
+		- Enviar e-mail 
+		- 
+	- Solução
+		- Criar classes services para orquestrar fluxo
+		- (criar classe repositorio)
+		- (criar e-mail services)
+
+O - OCP open closed / aberta para extensão / fechada para alteração
+	- Violação
+		- Alterar classes com métodos já com funcionamento pode criar bug
+	- Solução
+		- Criar classe abstract com metodo abstract e na herança override no metodo ex:
+			classe base DebitoConta  e DebitoContaPJ: DebitoConta e DebitoContaPF: DebitoConta
+			com override no metodo DebitarConta
+		- Criar métodos de extensão para classe DebitoConta ex (DebitarContaPF) e (DebitoContaPJ)
+		
+L - LSP Liskov substitution principle (subclasses devem se substituida pela superclasse)
+	- Violação
+		- Ex: Classe retangulo ser substituida por classe quadrado (erro ao calcular area)
+	- Solução
+		- Criar outra superclasse (paralelograma) recebendo parametros no construtor) e validando
+			no caso quadrado tem que ter area igual.
+I - ISP Interface segregation (clientes não devem ser forçados a depender de métodos que não usam)
+	- Violação
+		- Utilizar uma unica interface com metodos não utilizados pela classe
+	- Solução
+		- Utilizar interfaces específicas
+		- Ex: ICadastroCliente : ICadastro
+		
+D - DIP - Dependency inversion principle
+	- Violação
+		- Instanciar outras classes dentro da classe gerando acoplamento
+		- Utilizar implementação nas classes ao inves de abstração (interfaces)
+		
+	- Solução
+		- Utilizar interfaces nas classes services ex: IClienteRepository
+		- Utilizar injeção de dependência.
+
+https://medium.com/desenvolvendo-com-paixao/o-que-%C3%A9-solid-o-guia-completo-para-voc%C3%AA-entender-os-5-princ%C3%ADpios-da-poo-2b937b3fc530
+		
+		
+		

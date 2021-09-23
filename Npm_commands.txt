@@ -1,0 +1,52 @@
+
+npm search pct_name # lista pacotes
+npm view pct_name # detalhes do pacote
+npm view pct_name --json > detalhes.json # gera json detalhes do pacote
+
+npm install pct_name
+npm install pct_name@1.2.3
+npm install -g pct_name / pct_name@1.2.3  #global
+
+
+npm install # instala todas dependencias que esta no packages.json 
+npm install pct_name --save  # salva dependencia no packages.json
+npm install pct_name --save-dev  # salva dependencias dev no packages.json
+npm install pct_name --production # instala só dependencias principais (sem as devs) que esta no packages.json
+
+npm update pct_name  # atualiza pacote com a versao que esta no packages.json
+npm update pct_name --save # atualiza pacote e atualiza a versao que esta no packages.json
+npm update -g pct_name  
+
+npm uninstall pct_name
+npm uninstall -g pct_name
+npm uninstall pct_name -- save-dev  # remove dependencia e remove do packages.json
+
+npm list ou 
+npm ls #lista pacotes instalados no projeto
+npm ls -g #lista pacotes instalados globalmente
+npm ls -g --depth=0  #lista pacotes raiz
+npm ls -g --json > pacotes.json #gera a lista para arquivo json
+
+npm cache ls # lista pacotes que estão no cache
+npm cache clear # limpa o cache
+
+npm rebuild # restaura pacotes
+npm -g rebuild # restaura pacotes
+
+npm init -y # cria o packages.json
+
+npm root npm # mostra pasta node_modules local ou global com -g
+
+versão
+1.2.3 versão exata
+~1.2.3 versão aproximada
+^1.2.3 compativel
+>1.2.3 maior que
+>=1.2.3 maior ou igual que
+<1.2.3 menor que
+<=1.2.3 menor ou igual que
+
+
+
+
+

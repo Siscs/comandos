@@ -1,0 +1,117 @@
+# COMANDOS MONGODB
+help
+show dbs
+show collections
+
+use siscs // create if not exists and use database
+
+// INSERT
+db.usuarios.insert({'nome': 'titi', 'role':'oper', 'super': true})
+db.usuarios.insert([{},{}]);
+db.produtos.insert([{'nome': 'Caneta Bic Vermelha', 'Quantidade': 7, 'Valor': 3.99}, {'nome': 'Caneta Bic Verde', 'Quantidade': 3, 'Valor': 3.49} ])
+db.produtos.insertMany([{obj},{obj}]}
+ou
+db.createCollection('usuarios')
+
+// COUNT
+db.usuarios.count() // qtde documentos
+
+// WHERE
+db.usuarios.find()
+db.usuarios.find().pretty() // JSON Format
+db.usuarios.find({'role':'admin'})
+db.usuarios.find({'nome':'ryan', 'role':'admin'})
+db.usuarios.find({}, {'_id': 0}) // retira coluna id
+db.usuarios.find({'role': 'admin'}, {'nome':1, '_id':0 }) // filtra colunas 1sim 0nao
+
+// LIKE
+db.users.find({name: /a/})  // Like '%a%'
+db.users.find({name: /^pa/}) // Like 'pa%'
+db.users.find({name: /ro$/}) //like '%ro'
+db.users.find({$text:{$search:"text"}});
+
+// FORMAT 
+db.usuarios.find().forEach(p => print('Nome: ' + p.nome + ' ' + 'Role: ' + p.role))
+
+// FIRST
+db.usuarios.findOne({'role': 'admin'}) // primeiro result
+
+// ORDER BY
+db.usuarios.find().sort({nome:1}) 
+
+// ORDER BY DESC
+db.usuarios.find().sort({nome:-1}) 
+
+// MAX
+db.cp.pedidos.find().sort({criadoEm:-1}).limit(1)
+
+// TOP LIMIT
+db.usuarios.find().limit(2) // primeiros 2
+
+// COUNT WHERE
+db.usuarios.find({'role':'admin'}).count()
+
+// IN / EXISTS
+db.products.find({_id: {$in:[6,7]}})
+db.products.find({_id: {$in:[6,7]}}).max({ price: NumberDecimal("1.39")}).hint({price: 1})
+db.cp.pedidos.find({ ofertas: {$exists: true} , 'analiseCredito.resultado': { $in: ['APROVADO', 'PREAPROVADO']}})
+db.cp.pedidos.find({ofertas: {$exists: true}  , $or: [ {'analiseCredito.resultado': { $in: ['APROVADO', 'PREAPROVADO'] } } ]})
+
+// DATE
+db.cp.pedidos.find({criadoEm: {$gte: ISODate("2021-05-24") }});
+db.cp.pedidos.find({criadoEm: {$gte: ISODate("2021-05-23T00:00:00.000Z") }});
+
+// DATE BETWEEN
+db.cp.pedidos.find({criadoEm: {$gte: ISODate("2021-05-21T00:00:00.000Z"), $lte: ISODate("2021-05-23T00:00:00.000Z") }});
+db.demo524.insertOne({"EndDate":new ISODate("2020-01-19")});{
+   "acknowledged" : true,
+   "insertedId" : ObjectId("5e8adbe5437efc8605595b63")
+}
+> db.demo524.insertOne({"EndDate":new ISODate("2020-01-20")});{
+   "acknowledged" : true,
+   "insertedId" : ObjectId("5e8adbec437efc8605595b64")
+}
+
+> var first = new ISODate("2020-01-04");
+> var last = new ISODate("2020-01-31");
+> db.demo524.find({EndDate: {$gte: first, $lt: last}});
+
+
+// UPDATE
+db.Position.update({_id: LUUID('9f0eb4d2-2298-4b4e-8f72-752bdc1ef563') }, {$set: {Name: 'Analista de Sistemas'} });
+db.usuarios.update({'nome':'Cesar'},{'role': 'sysoper'}) // subistitue obj inteiro pelo seg param
+db.usuarios.update({'nome':'Cesar'}, {$set: {'role': 'sysmnt'}}) // update role
+db.usuarios.update({'nome':'Cesar'}, {$set: {'role': 'sysoper'}}, {upsert:true}) // insere caso não existe
+db.usuarios.update({'nome':'Cesar'}, {$set: {'role': 'sysmnt'}}) // update campo role
+db.produtos.update({'nome': 'Caneta Bic Preta'}, {$inc: {'Valor':0.01}}); // incrementa no campo valor
+
+db.collection.update(
+    { _id: <matching id>, "items.id": 1111 },
+    { "$inc": { "items.$.qty": 1 } }
+)
+
+
+
+db.cp.pedidos.update({'Id': 3}, {$set: {Ofertas: 
+    [ 
+        {qtdeParcelas: 12, valorParcela: 110.21}, 
+        {qtdeParcelas: 15, valorParcela: 1410.21},
+        {qtdeParcelas: 18, valorParcela: 1310.21},
+        {qtdeParcelas: 24, valorParcela: 1210.21},
+        ]}});
+
+// update nome propriedade
+db.produtos.update({'nome': 'Caneta Bic Preta'}, {$rename: {'Valor': 'Preco'}}); 
+
+// DELETE
+db.produtos.remove({'nome': 'Caneta Bic Preta'})
+db.produtos.remove({}) // remove todos
+
+// DROP COLLECTION
+db.dropCollection('usuarios')
+db.dropDatabase('siscs')
+
+// CREATE USER
+db.createUser({user:"user", pwd:"passwd", roles: [{role:"dbOwner", db: "database-name"}]})
+
+

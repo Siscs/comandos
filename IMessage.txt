@@ -1,0 +1,93 @@
+
+// IIntegrationMessage
+namespace FnxDigital.Component.Common.Messaging.Contracts
+{
+    /// <summary>
+    ///     The message contract abstraction.
+    /// </summary>
+    public interface IIntegrationMessage
+    {
+        /// <summary>
+        ///     Date and time message was created.
+        /// </summary>
+        DateTime OccurredOn { get; }
+
+        /// <summary>
+        ///     Message instance type name.
+        /// </summary>
+        string MessageType { get; }
+
+        /// <summary>
+        ///     Unique identifier for tracking.
+        /// </summary>
+        Guid TrackingId { get; set; }
+
+        /// <summary>
+        ///     Description of the business transaction to monitor the message.
+        /// </summary>
+        string BusinessTransaction { get; set; }
+
+        void AddCorrelationContext(string businessTransaction, Guid trackingId);
+    }
+}
+
+//IntegrationMessage
+namespace FnxDigital.Component.Common.Messaging.Contracts
+{
+    public abstract class IntegrationMessage : IIntegrationMessage
+    {
+        protected IntegrationMessage()
+        {
+            MessageType = GetType().Name;
+            OccurredOn = DateTime.Now;
+        }
+
+        public DateTime OccurredOn { get; }
+        public string MessageType { get; }
+        public Guid TrackingId { get; set; }
+        public string BusinessTransaction { get; set; }
+        public void AddCorrelationContext(string businessTransaction, Guid trackingId)
+        {
+            BusinessTransaction = businessTransaction;
+            TrackingId = trackingId;
+        }
+    }
+}
+
+// ContratoLegadoAssinadoEvent
+namespace FnxDigital.Service.AssinaturaEletronica.Domain.DomainEvents
+{
+    public class ContratoLegadoAssinadoEvent : IntegrationMessage
+    {
+        public string NumeroProposta { get; }
+        public DateTime DataAssinatura { get; }
+        public string Cpf { get; }
+        public string NumeroCcb { get; }
+        public string ApplicationName { get; }
+
+        public ContratoLegadoAssinadoEvent(string numeroProposta, 
+										   DateTime dataAssinatura, 
+										   string cpf, 
+										   string numeroCcb, 
+										   string applicationName)
+        {
+            NumeroProposta = numeroProposta;
+            DataAssinatura = dataAssinatura;
+            Cpf = cpf;
+            NumeroCcb = numeroCcb;
+            ApplicationName = applicationName;
+        }
+
+    }
+}
+
+// IEventHandler
+namespace FnxDigital.Component.Messaging.Abstractions
+{
+  public interface IEventHandler<in TMessage> : IEventHandler where TMessage : IIntegrationMessage
+  {
+    Task<MessageProcessResult> Handle(TMessage @event);
+  }
+}
+
+

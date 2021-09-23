@@ -1,0 +1,101 @@
+
+#create solution 
+dotnet new sln #cria com o nome da pastal atual
+dotnet new sln -n NomeSolution.sln
+
+#create project 
+dotnet new console -n ConsoleApp
+dotnet new classlib -n ClassesApp
+dotnet new webapi -o nomepasta
+
+# add reference to project
+dotnet add projetoApp/projetoApp.csproj reference projetoClassLib/projetoClassLib.csproj
+
+#add project to solution
+dotnet sln Solution.sln add projetoApp/projetoApp.csproj projetoClassLib/projetoClassLib.csproj
+
+#restaurar pacotes
+dotnet restore
+
+#Compilar / build
+dotnet build
+
+#executar
+dotnet run
+dotnet run --lauch-profile <nome_config>
+dotnet run --lauch-profile Staging
+dotnet watch run # fica assistindo alterações
+
+#gerar publish exe
+dotnet publish --configuration Release --output <folder>
+dotnet publish --configuration Release --output dist
+dotnet publish -c Release -r win10-x64
+dotnet publish -c Release -r ubuntu.16.10-x64
+
+
+dotnet <tool-name> --help
+
+Comando	Função
+dotnet build		Compila um aplicativo .NET Core.
+dotnet build-server	Interage com servidores iniciados por um build.
+dotnet clean		Limpa saídas de build.
+dotnet help			Mostra uma documentação mais detalhada online para o comando.
+dotnet migrate		Migra um projeto válido da Visualização 2 para um projeto do SDK 1.0 do .NET Core.
+dotnet msbuild		Oferece acesso à linha de comando do MSBuild.
+dotnet new			Inicializa um projeto do C# ou F# de um modelo especificado.
+dotnet pack			Cria um pacote NuGet do seu código.
+dotnet publish		Publica um aplicativo dependente do .NET Framework ou autocontido.
+dotnet restore		Restaura as dependências para um determinado aplicativo.
+dotnet run			Executa o aplicativo na origem.
+dotnet sln			Opções para adicionar, remover e listar projetos em um arquivo de solução.
+dotnet store		Armazena os assemblies no repositório de pacotes de tempo de execução.
+dotnet test			Executa testes usando um executor de teste.
+
+
+#Referências de projeto
+dotnet add reference		Adiciona uma referência ao projeto.
+dotnet list reference		Lista referências ao projeto.
+dotnet remove reference		Remove uma referência ao projeto.
+
+												 
+#Pacotes NuGet
+dotnet add package <packagename> -v x.x.x Adiciona um pacote NuGet.
+dotnet list package <packagename>	Lista pacotes instalados no projeto
+dotnet remove package <packagename>	Remove um pacote NuGet.
+dotnet search <packagename> 	Ver versoes para install
+dotnet tool install --global dotnet-search
+
+
+#Comandos NuGet
+dotnet nuget delete		Exclui ou retira da lista um pacote do servidor.
+dotnet nuget locals		Limpa ou lista os recursos locais do NuGet, como cache de solicitação http, cache temporário ou pasta de pacotes globais em todo o computador.
+dotnet nuget push		Envia um pacote ao servidor e os publica.
+
+#Comandos de ferramentas globais
+Ferramentas Globais do .NET Core estão disponíveis a partir do SDK do .NET Core 2.1.300:
+
+dotnet tool install		Instala uma Ferramenta Global no seu computador.
+dotnet tool list		Lista todas as Ferramentas Globais atualmente instaladas no diretório padrão do computador ou no caminho especificado.
+dotnet tool uninstall	Desinstala uma Ferramenta Global do computador.
+dotnet tool update
+
+#Ferramentas adicionais
+A partir do SDK do .NET Core 2.1.300, várias ferramentas que estavam disponíveis apenas por projeto usando DotnetCliToolReference agora estão disponíveis como parte do SDK do .NET Core. Essas ferramentas estão listadas na tabela a seguir:
+
+dev-certs		Cria e gerencia certificados de desenvolvimento.
+ef				Ferramentas de linha de comando do Entity Framework Core.
+sql-cache		Ferramentas de linha de comando de cache do SQL Server.
+user-secrets	Gerencia os segredos do usuário de desenvolvimento.
+watch			Inicia um observador de arquivo que executa um comando quando os arquivos são alterados.
+
+#Entity framework tools
+
+dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 3.1.5
+
+#Migrations
+dotnet ef migrations add InitialCreate 
+dotnet ef database update
+
+
+

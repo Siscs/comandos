@@ -1,0 +1,63 @@
+
+implements - interface
+extends - heranca
+
+
+C#				JAVA			OBS
+static							NÃO PRECISA SER INSTANCIADA
+sealed			final			NÃO PODE SER ESTENDIDA / herdada
+abstract						NÃO PODE SER INSTANCIADA SOMENTE HERDADA
+
+
+#linq curso
+https://www.youtube.com/playlist?list=PLM-p96nOrGcYGyfYpStN3jnaTuIosO3V5
+
+var result = from produto in produtos
+	join categoria in categorias
+	on produto.categoriaid = produto.categoriaid
+	where categoria.tipo == "super"
+	order by produto.quantidade descending 
+	select new { produto, categoria }
+	
+	
+var result = from produto in produtos
+	join categoria in categorias
+	on produto.categoriaid = produto.categoriaid
+	where categoria.tipo == "super"
+	order by produto.quantidade descending 
+	select new { produto, categoria }
+	into restemp
+	where restemp.produto.quantidade > 0
+	select restemp
+	
+var result = from p in 
+	(
+		from p2 in produtos
+		where p2.quantidade > 10
+		select p2
+	)
+	where p.quantidade < 50
+	select p;
+
+var result = from p in produtos
+	let pTemp = (
+		from p2 in produtos
+		where p.nome.contains("litro")
+		select p2
+	)
+	where pTemp.quantidade > 1
+	select p;
+
+// groupy by
+var zzzz = itensRelatorioAnaliticoCsv.GroupBy(g => g.Operador)
+	.Select( x => new { key = x.Key, total = x.Count(), itens = x.ToList() });
+
+
+//foreach (var gg in zzzz)
+//{
+//    gg.ToList();
+//    //foreach (var xx in gg)
+//    //{
+//    //    xx.
+//    //}
+//}

@@ -1,0 +1,8 @@
+#Automapper dotnet core
+#Add package
+dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
+
+#startup
+services.AddAutoMapper(typeof(Startup));
+
+

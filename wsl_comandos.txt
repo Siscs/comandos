@@ -1,0 +1,29 @@
+wsl --install
+
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+#set default version
+wsl --set-default-version 2
+
+#list
+wsl -l -v
+wsl -l --running
+
+
+#init dist
+wsl -d <distname>
+
+
+#terminate dist running
+wsl -t <distname>
+
+
+#set default dist
+wsl -s <distname>
+
+
+
+\\wsl$\Ubuntu
+

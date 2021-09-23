@@ -1,0 +1,253 @@
+# COMANDOS DOCKER	
+
+#############
+# IMAGENS
+#############
+
+# lista as imagens existentes
+docker images
+
+#obter imagem do docker hub
+docker image pull <nome_imagem>
+docker image pull <nome_imagem>:versão
+
+#inspecionar imagem
+docker image inspect <id_imagem>
+
+#remover imagem
+docker image rmi <id_imagem>
+
+#remover imagens <none>
+docker rmi $(docker images -f "dangling=true" -q)
+
+
+
+#############
+# CONTAINER
+#############
+
+#lista os container em execução
+docker ps / docker container ps
+
+#lista todos os container
+docker container ps -a
+
+# mostra informações do container
+docker container inspect <container>
+
+
+# baixa a imagem do docker hub e se não houver a imagem local e cria um container, e executa um comando
+# o run executa as 4 operaçoes: docker container create, start, exec
+docker container run <nome-imagem> <comando da imagem>
+docker container run alpine ls -l
+
+#Cria um novo container da imagem com outro nome/apelido
+docker container run --name <apelido> <nome-imagem> <comando da imagem>
+
+# cria container e entra no container com terminal 
+# -i=interativo, -t=terminal tty -e=variavel ambiente -e VAR=xx
+docker container run -it <imagem> <comando>
+docker container run -it apine /bin/sh
+
+
+#cria o container baseado em uma imagem
+docker container create <nome_imagem>
+docker container create -it <nome_imagem>
+docker container create --name <apelido> <nome_imagem>
+docker container create --name ng_inx -p 8085:80 nginx
+
+# inicializa um container criado deixando em modo "em execucao"
+docker container start <id_container> ou <nome>
+
+# executa um comando no container criado
+docker container exec <id_container> <comando>
+docker container exec alpine ls -l
+docker container exec -it alpine_ces /bin/bash
+
+# para um container em execução
+docker container stop <id_container> ou <name>
+
+#remover um container
+docker container rm <id_conteiner> ou <nome>
+
+#remover todos containers parados
+docker container prune
+
+#mapear porta -d=modo backgroud detached
+docker container start -p <porta_host:porta_container> -d <container>1
+docker container start -p 8080:80 -d nginx
+docker container run --name <apelido> -p 8081:80 -d <imagem>  # run cria e executa o container
+
+#mapear pastas
+# o container vai usar a pasta mapeada
+docker container run -d --name <apelido> -p 8081:80 <imagem> -v <pasta_host:pasta_container>
+docker container run -d --name ng_inx001 -p 8081:80 nginx -v </home/cesar/html:/usr/share/nginx/html>
+
+#run
+docker run -d -it --entrypoint=bash --name websocket -p 8080:80 websocket:1.0
+docker run -d -it --entrypoint=bash -e "ASPNETCORE_ENVIRONMENT=Development" --name websocket -p 8080:80 websocket:1.0
+
+#############
+# LOGS
+#############
+
+#logs
+# -f fica escutando o arquivo
+docker logs <conteiner>
+
+docker logs -f <conteiner>
+
+
+#############
+# VOLUMES
+#############
+
+#listar volume
+docker volume ls
+
+#criar volume
+docker volume create <nome_volume>
+docker volume create dadosdb
+
+#usar volume
+#utilizar inspect da imagem para ver o local em volumes
+docker container run -d --name mongo_db -p 8085:27017 mongo -v dadosdb:/data/db
+
+#remover volume 
+docker volume rm <nome_volume>
+
+#remover todos os volumes
+docker volume prune
+
+#############
+# NETWORK
+#############
+
+# lista as redes
+docker network ls
+
+#ver os ips do container
+docker inspect bridge
+docker network inspect <nome_network>
+
+#passando o ip que mostrou no inspect
+docker container create --name nomecontainer -p 8081:80 -e DBHOST=172.17.0.10 nomeimagem
+
+#criar network
+docker network create <nome>
+docker network create backend
+docker network create frontend
+
+#criar container usando a network
+docker container create --name <nome_container> -p 8081:80 --network <nome_network> <nome_imagem>
+docker container create --name meu_sqlserver -p 8081:80 -v meuvolume:/var/lib/data --network backend sqlserver2019
+docker container create --name meu_appserver -p 8081:80 -v meuvolume:/var/lib/data --network frontend appcoremvc
+
+
+#############
+# DOCKERFILE
+#############
+
+#exemplo nginx
+FROM debian:latest
+LABEL version = "1.0" description="Siscs debian container"
+RUN apt-get update && apt-get install -y nginx && apt-get clean
+EXPOSE 80/tcp
+ENTRYPOINT [ "/usr/sbin/nginx" ]
+CMD ["-g","daemon off;"] 
+
+
+#exemplo net app
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+LABEL version = "1.0" description="Siscs Asp.net Application"
+
+#WORKDIRCONTAINER_FOLDER
+WORKDIR /app
+
+
+#COPY HOST_SOURCE_DIR CONTAINER_FOLDER
+COPY dist /app
+
+EXPOSE 80/tcp
+
+ENTRYPOINT [ "dotnet","app.dll" ]
+
+#PARAMETROS
+#CMD ["-a","-h"] 
+
+
+#############
+# DOCKER BUILD IMAGEM
+#############
+
+#Criar imagem com Dockerfile
+docker build -t <nome_imagem:versao> <pasta_local_dockerfile>
+docker build -t app-siscs:1.0 .
+
+
+#############
+# DOCKER COMPOSE
+#############
+
+Iniciar docker compose (pasta onde esta o yml)
+docker-compose up -d
+docker-compose build --force-rm --build-arg PAT=jgm47ei3dlffswewju5pqqlmsxwojk3qtb5skxcvxgky3esj7prq --build-arg FEED_URL=https://vwon16.finamax.com.br/DefaultCollection/_packaging/FnxCore.Components/nuget/v3/index.json
+
+
+Parando todos os containers:
+
+docker-compose stop
+
+Removendo todos os containers:
+
+docker-compose rm -f
+
+Vendo o log de todos os containers:
+
+docker-compose logs -f
+
+Construir os containers sem inicializá-los:
+
+docker-compose build
+
+
+
+#############
+# SQL SERVER
+#############
+docker pull mcr.microsoft.com/mssql/server:latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker container create -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Siscs@admin" -p 1433:1433 --name sql2019 mcr.microsoft.com/mssql/server
+docker exec -it sql2019 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <your_password>
+
+
+
+
+###############
+# REFERÊNCIAS
+###############
+
+Portainer 
+https://medium.com/@renato.groffe/docker-portainer-gerenciando-containers-a-partir-de-um-browser-87af6ce74be3
+
+https://dockerdefinitivo.com/
+
+Kitematic
+sworm
+Kubernates
+
+
+https://www.iperiusbackup.net/pt-br/qual-a-diferenca-entre-uma-imagem-docker-e-conteiner-como-criar-um-arquivo-docker-2/
+
+https://www.youtube.com/playlist?list=PLJ4k1IC8GhW1kYcw5Fiy71cl-vfoVpqlV
+https://chat.whatsapp.com/C0b7eb8q5RUFLyqIpzpbxo
+
+https://www.youtube.com/watch?v=AAp1N3gBWOU
+
+https://medium.com/@renato.groffe/docker-guia-de-refer%C3%AAncia-gratuito-70c14cfd8132
+
+#microsoft apoio
+https://www.microsoft.com/pt-br/dev-community/Event/Register?eventId=[Online]Minicursogratuito:Docker_gSQqFF6Kpgp2&ocid=aid2423408
+
+docker nuget
+https://www.mytechramblings.com/posts/how-to-use-a-private-nuget-feed-with-docker/
