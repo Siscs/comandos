@@ -21,6 +21,10 @@
 	> dotnet ef migrations script -from <migration_name> -to <migration_name>
 
 #Package Manager Console
+	
+	#para rodar os comandos
+	PM> install-package Microsoft.EntityFrameworkCore.Tools
+	
 	#add migration
 	PM> add-migration InitialCreate
 	
