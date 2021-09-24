@@ -1,0 +1,42 @@
+
+#Migrations
+
+#CLI commands
+	#add migration
+	> dotnet ef migrations add <migration_name> 
+	
+	#update database
+	> dotnet ef database update
+	
+	#remove migration
+	> dotnet ef migrations remove
+	
+	#Reverting a Migration
+	>  dotnet ef database update <migration_name> 
+	
+	#Generate SQL Script for all migrations
+	> dotnet ef migrations script
+	
+	#Generate SQL Script for specified migrations
+	> dotnet ef migrations script -from <migration_name> -to <migration_name>
+
+#Package Manager Console
+	#add migration
+	PM> add-migration InitialCreate
+	
+	#update database
+	PM> update-database
+	
+	#remove migration
+	PM> remove-migration
+	
+	#Reverting a Migration
+	PM> Update-database <migration_name>
+	
+	#Generate SQL Script for all migrations
+	PM> script-migration
+	
+	#Generate SQL Script for specified migrations
+	> script-migration -from <migration_name> -to <migration_name>
+	
+	
