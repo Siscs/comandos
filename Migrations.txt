@@ -1,9 +1,14 @@
 
 #Migrations
 
+*Quando em camadas rodar os comandos na camada do contexto apontando o startup project e nome do contexto
+
 #CLI commands
 	#add migration
 	> dotnet ef migrations add <migration_name> 
+	> dotnet ef --startup-project <startup_project_name> migrations add <migration_name> #no projeto do contexto
+	> dotnet ef --startup-project <startup_project_name> migrations add <migration_name> -c <context_name>
+	
 	
 	#update database
 	> dotnet ef database update
@@ -27,6 +32,8 @@
 	
 	#add migration
 	PM> add-migration InitialCreate
+	PM> Add-Migration -StartupProject <startup_project_name> <migration_name>
+	PM> Add-Migration -StartupProject <startup_project_name> -Context "<context_name>" <migration_name>
 	
 	#update database
 	PM> update-database
