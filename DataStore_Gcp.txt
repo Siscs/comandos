@@ -1,0 +1,7 @@
+Filtro chave literal
+
+pesquisa tabela filha
+Chave -> tem ancestral -> Key(IDS_Client, '7Z5I349NLQ0HRDS')
+
+SELECT * WHERE __key__ HAS ANCESTOR KEY(Person, 5629499534213120)
+ELECT * WHERE __key__ HAS ANCESTOR KEY(Person, 'Amy')

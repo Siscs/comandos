@@ -54,13 +54,6 @@ git log --oneline --decorate # Lista os logs dos commits e mostra branch (HEAD) 
 git log --oneline --decorate --all # mostra todas as branchs
 git log --oneline --decorate --all # mostra logs com ramificacao em caso de divergemcia ( branch com e.txt  e master com f.txt)
 git log --diff-filter=D --summary # Mostra commit delete arquivo
-git log <nome_arq> # lista commits com alteração do arquivo
-
-#SHOW 
-git show 		   # Lista alteraçoes do ultimo commit (HEAD)
-git show <commit>  # Lista alteraçoes do commit
-
-
 
 #STACH ( shelve )
 
@@ -76,10 +69,6 @@ git stash branch branchxxx  #cria a branch apartir da stach
 
 git commit -m "add a"
 
-#COMPARAR ALTERACOES EM ARQUIVOS
-git diff   #todos arquivos alterados
-git diff <nome_arq> 
-git diff --staged <nome_arq> #arquvo em stage
 
 
 #REPOSITORIO REMOTO
@@ -118,7 +107,6 @@ git clone url_repositorio_remoto nome_repositorio  #Cria a pasta e o repositorio
 git checkout <arquivo> 	#undo arquivo (antes do git add (stage))
 
 #UNDO ARQUIVO EXCLUIDO
-git rm <arquivo>
 git log --diff-filter=D --summary # Mostra commit delete arquivo
 git checkout <commit>~1 <nome_arquivo> # Restaura arquivo excluido no commit
 git checkout 1a2c~1 arq3

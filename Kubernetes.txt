@@ -1,0 +1,233 @@
+
+-- set project shell
+gcloud config set project dotz-uat
+gcloud config set project dotz-dev
+
+-- cluster de DEV
+gcloud container clusters get-credentials dev --zone southamerica-east1-c --project dotz-dev-219021
+
+-- cluster de UAT
+gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dotz-uat
+
+-- cluster de PROD
+gcloud container clusters get-credentials gke-production --region southamerica-east1 --project dotz-production
+
+gcloud container clusters get-credentials gke-production-01 --region southamerica-east1 --project dotz-production
+
+
+-- ver a versao da imagem no cluster
+kubectl describe pod -n accounts accounts-api-default-55c64cc7b4-2n4bk | grep Image
+
+-- deletar todas as pods de um namespace
+kubectl delete --all pods --namespace=bonification
+
+-- editar credentials
+kubectl edit secret klabinpur -n klabinpur
+
+-- listar env
+kubectl exec -it -n gamification gamification-ui-admin-2193081c-1jasd -- env | sort
+
+kubectl exec -it -n wallet wallet-api-default-69ff5f4869-7hqmf -- env | grep -i jwt
+
+-- gambiarra para listar env
+kubectl exec -it preventionuser-api-admin-88574ff96-zsjj5 env -n prevention-user | findstr 'ROUTER_AFTER_AUTH_CALLBACK'
+
+-- salvar edição
+wq! -> salva
+
+-- install kubectl
+apt-get install kubectl
+
+-- exibir informações do gcloud
+gcloud info
+
+-- obter todas as pods
+kubectl get pods --all-namespaces
+
+-- obter pod especifica
+kubectl get pods -n salesforce
+
+-- visualizar logs / salesforce é o nome da namespace
+kubectl logs -f salesforce-api-default-staging-58867755d8-s78qr -n accounts
+
+-- exibir erro na pod
+kubectl describe pod salesforce-api-default-staging-5f496995c7-4cj5h -n accounts
+
+--entrar dentro da POD
+kubectl exec -it salesforce-ui-admin-ff9dc798f-bhgg7 sh -n accounts
+
+-- port-forward do redis para a minha máquina
+kubectl port-forward redis-0 6379:6379
+kubectl port-forward -n default redis-0 6379:6379
+
+-- delete pod
+kubectl delete pods pod
+kubectl delete pod crm-campaings-ui-admin-796d6c457-zmdkx -n accounts
+
+-- visualizar saida da pod
+kubectl logs -f -n market-structure marketstructure-worker-filesprocessinitial-9296q
+
+-- visualizar arquivo do ingress
+kubectl get ingress -n accounts -o json
+
+-- visualizar service
+kubectl get service -n accounts -o json
+
+-- obter deployments
+kubectl get deployment -n accounts
+
+-- deletar deployments
+kubectl delete deployment accounts-api-default -n accounts
+
+-- pegar dados do kong, atribuímos o dns para o ip do kong
+k get services -n kong
+
+-- obter todas as namespaces do ingress
+k get ingress --all-namespaces
+
+-- descrever consumo do node
+kubectl describe node gke-dev-pool-temp-62cb830a-4tl0
+
+-- modificar o edit
+export KUBE_EDITOR="atom --wait" # for atom editor
+export KUBE_EDITOR="mate -w" # for textmate
+export KUBE_EDITOR="nano" # for nano
+export KUBE_EDITOR="subl --wait" # sublime
+
+
+==================== comandos GCP
+
+Comandos utilizados
+gcloud init
+gcloud container clusters create [cluster_name]
+gcloud container clusters get-credentials [cluster_name]
+gcloud config set project dotz-dev
+gcloud config set compute/zone southamerica-east1-c
+
+================= minikube
+minikube start --driver=hyperv --no-vtx-check
+minikube.exe start --driver=hyperv --hyperv-virtual-switch=ExternalWiFi
+minikube start --driver=virtualbox
+minikube config set driver virtualbox
+minikube config set driver hyperv
+
+-- obter url servico
+minikube service wordpress-service --url
+
+--addons
+minikube addons list
+minikube addons enable dashboard
+
+
+===============
+-- KUBECTL
+
+-- create
+-- Criar deploy atraves imagem
+kubectl run nginx --image=nginx --restart=Never
+kubectl create -f .
+kubectl create -f <arquivo.yaml>
+
+
+--Get
+kubectl get nodes
+kubectl get pods
+kubectl get pods -n <namespace> 
+kubectl get pods -n --all-namespaces
+kubectl get services
+kubectl get deployments
+kubectl get pvc
+kubectl get rs
+kubectl get hpa
+kubectl cluster-info
+
+-- DESCRIBE
+kubectl describe pod nginx
+kubectl describe <type> <name> -o yaml
+
+-- Logs
+kubectl logs <pod> -n <namespace> 
+
+-- Entrar na pod
+kubectl exec -it <pod> -n <namespace> -- <command> | grep -i JKS_RATE
+kubectl exec -it <pod> -n <namespace> -- bash
+
+-- port forward
+kubectl port-forward redis-0 6379:6379
+
+
+--Criando service
+kubectl expose deployment <deploy_name> --type=LoadBalancer --port=80
+kubectl expose deployment <deploy_name> --type=ClusterIp --port=1433
+kubectl get services 
+
+-- scale
+kubectl scale deployment/<name_deploy> --replicas=<n_replica>
+-- scale down
+kubectl scale deployment/<name_deploy> --replicas=<n_replica_down>
+
+--autoscale
+minikube addons enable metrics-server
+kubectl autoscale deployment wordpress-deploy --cpu-percent=20 --min=1 --max=20
+kubectl get hpa
+
+-- get replicas
+kubectl get rs
+
+-- update image
+kubectl set image deplayment/<deploy_name> <containers_name>=<hub_user/new_image:version>
+
+-- rollback
+kubectl rollout status deployment/<deploy_name>
+kubectl rollout undo deployment/<deploy_name>
+
+-- Delete deployment
+kubectl delete deployment <deploy_name>
+
+## DELETE
+-- delete all from file/folder
+kubectl delete -f .
+
+--Delete service
+kubectl delete service <service_name>
+
+-- delete pod
+kubectl delete pod <pod> -n <namespace_name>
+
+-- delete all pods
+kubectl delete --all pods
+
+-- delete all pods in namespace default'
+kubectl delete --all pods --namespace default
+
+--Delete/stop all kubernetis pods
+kubectl delete --all deployments
+
+-- Siege (TESTE CARGA)
+Instalar siege load test (siege-windows)
+https://github.com/ewwink/siege-windows
+
+Estressar a aplicação
+c = usuarios simultaneos
+d = intervalo em segundos
+t = duração
+
+siege c20 t60s http://172.23.139.99:31068/wp-login.php
+
+================= exemplos pipeline
+kubectl get namespace --field-selector=metadata.name==pos -o jsonpath={.items[*].metadata.name}
+kubectl apply -f config-kong.yaml
+kubectl get secrets -n pos --field-selector=metadata.name==pos-dotznext-com -o jsonpath={.items[*].metadata.name}
+kubectl delete secret pos-dotznext-com -n pos
+kubectl create secret tls pos-dotznext-com --key /var/lib/jenkins/workspace/Setup/resources/config/Certificates/dotznext.com/latest/tls.key --cert /var/lib/jenkins/workspace/Setup/resources/config/Certificates/dotznext.com/latest/tls.crt -n pos
+kubectl apply -f deployment-staging.yaml
+kubectl get hpa -n pos --field-selector=metadata.name==pos-api-private -o jsonpath={.items[*].metadata.name}
+kubectl get services -n pos --field-selector=metadata.name==pos-api-private -o jsonpath={.items[*].metadata.name}
+kubectl get services -n pos -o json
+
+
+================= referências
+
+https://kuber.host/docs/kubectl_tricks
+https://minikube.sigs.k8s.io/docs/drivers/virtualbox/
+

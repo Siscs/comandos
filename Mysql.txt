@@ -1,0 +1,136 @@
+MYSQL COMMANDS
+
+#referencias
+https://www.w3resource.com/mysql/mysql-functions-and-operators.php
+https://www.delftstack.com/howto/mysql/
+
+------------------
+#DATE
+------------------
+select * from t where date(col_name) = '2018-09-25';
+select * from t where col_name between '2018-09-24 12:00:00' and '2018-09-24 13:59:00';
+select DATE_FORMAT(col_date_name, "%d/%m/%Y") AS formatted_date
+select sysdate()
+select curdate() current_date();
+select curtime() current_time();
+
+
+------------------
+#INSERT
+------------------
+insert into T values (1,11), (1,9);
+INSERT INTO TABLE(FieldValue) VALUES('')
+SELECT SCOPE_IDENTITY() AS TableID
+
+
+------------------
+#UPDATE
+------------------
+UPDATE purchases_items SET last_date_sync = NULL 
+WHERE CAST(last_date_sync AS CHAR(20)) = '0000-00-00 00:00:00';
+
+UPDATE purchases_items SET update_transaction_date = NULL 
+WHERE CAST(update_transaction_date AS CHAR(20)) = '0000-00-00 00:00:00';
+
+update purchases_items set quantity = replace(quantity, '.000', '') where is_kilogram=0;
+
+------------------
+#ALTER TABLE
+------------------
+ALTER TABLE t2 ADD COLUMN col_name varchar(10) not null
+ALTER TABLE t2 ADD COLUMN col_name int not null after col_name
+ALTER TABLE t2 ADD COLUMN col_name int not null first
+
+ALTER TABLE t1 RENAME COLUMN a TO b,
+               RENAME COLUMN b TO a;
+ALTER TABLE t1 MODIFY b INT NOT NULL; // alterar tipo
+ALTER TABLE t2 DROP COLUMN c, DROP COLUMN d;
+ALTER TABLE tbl_name DROP FOREIGN KEY fk_symbol;
+
+------------------
+#version
+------------------
+SELECT VERSION();
+SELECT @@VERSION;
+
+------------------
+#Exists
+------------------
+SELECT IF( EXISTS(
+             SELECT stu_firstName
+             FROM student_details
+             WHERE stu_id = 4), 'Yes, exists', 'No, does not exist') as RESULT;
+
+
+
+------------------
+#DATA TYPES
+------------------
+- DECIMAL(M,D) – Ponto decimal com M dígitos no total (precisão) e D casas decimais (escala); o padrão é 10,0; M vai até 65 e D até 30.
+- FLOAT(M,D) – Ponto flutuante com precisão M e escala D; o padrão é 10,2; D vai até 24.
+- CHAR(M) – String que ocupa tamanho fixo entre 0 e 255 caracteres
+- BOOL / BOOLEAN – Valores binários 0 / 1; Na verdade, é um alias para o tipo TINYINT(1)
+- VARCHAR(M) – String de tamanho variável, até 65535 caracteres.
+- BLOB / MEDIUMBLOB/ TINYBLOB – Campo com tamanho máximo de 65535 caracteres binários; ‘Binary Large Objects’, são usados para armazenar grandes quantidades de dados, como imagens.
+- MEDIUMTEXT – Permite armazenar até 16.777.215 caracteres.
+- LONGTEXT – Permite armazenar até 4.294.967.295 caracteres.
+- DATE – Uma data de 01/01/1000 a 31/12/9999, no formato YYYY-MM-DD
+- DATETIME – Uma combinação de data e hora de 01/01/1000 00:00:00 a 31/12/9999 23:59:59, no formato YYYY-MM-DD HH:MM:SS
+- TIME – Hora apenas, no formato HH:MM:SS
+- YEAR(M) – Ano nos formatos de 2 ou 4 dígitos; Se forem 2 (YEAR(2)), ano vai de 1970 a 2069; para 4 (YEAR(4)), vai de 1901 a 2155. O padrão é 4.
+
+Tipo		Tamanho em Bytes	Faixas de valores
+BIGINT		8					SIGNED: -9.223.372.036.854.775.808 a 9.223.372.036.854.775.807
+								UNSIGNED: 0 a 18.446.744.073.709.551.615
+
+INT			4					SIGNED: -2,.147.483.648 e 2.147.483.647
+								UNSIGNED: 0 a 4.294.967.295
+MEDIUMINT	3					SIGNED: -8.388.608 a 8.388.607
+								UNSIGNED:  0 a 16.777.215
+SMALLINT	2					SIGNED: -32.768 a 32.767
+								UNSIGNED:  0 a 65.535
+TINYINT		1					SIGNED: -128 a 127
+								UNSIGNED:  0 a 255
+								
+
+
+------------------
+PROCEDURE
+------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS addColumnToTable $$
+CREATE PROCEDURE addColumnToTable()
+BEGIN
+IF 
+NOT EXISTS( (SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE()
+        AND COLUMN_NAME='sale_person_designation' AND TABLE_NAME='sale_details') ) 
+THEN
+    ALTER TABLE sale_details ADD sale_person_designation varchar(255);
+END IF;
+END $$
+CALL addColumnToTable() $$
+DELIMITER ;
+
+------------------
+CREATE TABLE
+------------------
+create table if not exists testecesar
+(
+	Ativo bit not null,
+    Quantidade decimal(10,3) not null
+);
+
+
+--------------------------
+ALTER TABLE COLUMN EXISTS
+---------------------------
+
+set @altercmd = (SELECT IF( EXISTS(
+			SELECT table_name, column_name FROM INFORMATION_SCHEMA.COLUMNS 
+				WHERE TABLE_SCHEMA='pos' AND TABLE_NAME='testecesar' AND COLUMN_NAME='is_kilogram'
+		), "SELECT 'Exists'", "alter table testecesar add column is_kilogram bit default 0 after ativo;"));
+
+PREPARE command FROM @altercmd;
+EXECUTE command;
+DEALLOCATE PREPARE command;  

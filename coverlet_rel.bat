@@ -1,0 +1,1 @@
+start c:\dados\temp\coverage\index.html
