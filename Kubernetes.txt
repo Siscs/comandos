@@ -1,19 +1,34 @@
 
+------------------------------
+¤ Comandos GCP
+------------------------------
+
+Comandos utilizados
+gcloud init
+gcloud container clusters create [cluster_name]
+gcloud container clusters get-credentials [cluster_name]
+gcloud config set project dtz-dev
+gcloud config set compute/zone southamerica-east1-c
+
+
 -- set project shell
-gcloud config set project dotz-uat
-gcloud config set project dotz-dev
+gcloud config set project dtz-uat
+gcloud config set project dtz-dev
 
 -- cluster de DEV
-gcloud container clusters get-credentials dev --zone southamerica-east1-c --project dotz-dev-219021
+gcloud container clusters get-credentials dev --zone southamerica-east1-c --project dtz-dev-219021
 
 -- cluster de UAT
-gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dotz-uat
+gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dtz-uat
 
--- cluster de PROD
-gcloud container clusters get-credentials gke-production --region southamerica-east1 --project dotz-production
+-- cluster de P
+gcloud container clusters get-credentials gke-production --region southamerica-east1 --project dtz-production
 
-gcloud container clusters get-credentials gke-production-01 --region southamerica-east1 --project dotz-production
+gcloud container clusters get-credentials gke-production-01 --region southamerica-east1 --project dtz-production
 
+------------------------------
+¤ Comandos KUBECTL
+------------------------------
 
 -- ver a versao da imagem no cluster
 kubectl describe pod -n accounts accounts-api-default-55c64cc7b4-2n4bk | grep Image
@@ -50,7 +65,7 @@ kubectl get pods -n salesforce
 -- visualizar logs / salesforce é o nome da namespace
 kubectl logs -f salesforce-api-default-staging-58867755d8-s78qr -n accounts
 
--- exibir erro na pod
+-- exibir erro/inspecionar na pod
 kubectl describe pod salesforce-api-default-staging-5f496995c7-4cj5h -n accounts
 
 --entrar dentro da POD
@@ -95,21 +110,13 @@ export KUBE_EDITOR="nano" # for nano
 export KUBE_EDITOR="subl --wait" # sublime
 
 
-==================== comandos GCP
-
-Comandos utilizados
-gcloud init
-gcloud container clusters create [cluster_name]
-gcloud container clusters get-credentials [cluster_name]
-gcloud config set project dotz-dev
-gcloud config set compute/zone southamerica-east1-c
-
 ================= minikube
 minikube start --driver=hyperv --no-vtx-check
 minikube.exe start --driver=hyperv --hyperv-virtual-switch=ExternalWiFi
 minikube start --driver=virtualbox
 minikube config set driver virtualbox
 minikube config set driver hyperv
+minikube dashboard
 
 -- obter url servico
 minikube service wordpress-service --url
@@ -122,11 +129,34 @@ minikube addons enable dashboard
 ===============
 -- KUBECTL
 
+-- MODO IMPERTIVO DIRETO DA IMAGE NO HUB
+kubectl create deployment <deploy_name> --image=<user/nome imagem no hub:version>
+kubectl create deployment <deploy_name> --image=user/image_name:1
+
+-- MODO IMPERTIVO
+kubectl create -f <app.yaml>
+kubectl create -f <services.yaml>
+
+-- MODO IMPERTIVO EXEMPLO
+kubectl create deployment <deploy_name> --image=<user/nome imagem no hub:version>
+kubectl expose deployment <deploy_name> --type=LoadBalancer --port=<container_port> // CREATE SERVICE
+minikube service <deployment_name> // GERAR IP PARA O SERVICE
+kubectl describe <deployment_name>
+
+
+-- MODO DECLARARIVO (POR ARQUIVO)
+kubectl apply -f <arquivo.yaml>
+
+
 -- create
 -- Criar deploy atraves imagem
 kubectl run nginx --image=nginx --restart=Never
 kubectl create -f .
 kubectl create -f <arquivo.yaml>
+
+--Get config kubernetes como está configurado
+kubectl config view
+
 
 
 --Get
@@ -141,7 +171,7 @@ kubectl get rs
 kubectl get hpa
 kubectl cluster-info
 
--- DESCRIBE
+-- DESCRIBE / INSPECIONAR PODS
 kubectl describe pod nginx
 kubectl describe <type> <name> -o yaml
 
@@ -154,7 +184,6 @@ kubectl exec -it <pod> -n <namespace> -- bash
 
 -- port forward
 kubectl port-forward redis-0 6379:6379
-
 
 --Criando service
 kubectl expose deployment <deploy_name> --type=LoadBalancer --port=80
@@ -190,6 +219,7 @@ kubectl delete -f .
 
 --Delete service
 kubectl delete service <service_name>
+kubectl delete -f <service.yaml>
 
 -- delete pod
 kubectl delete pod <pod> -n <namespace_name>
@@ -202,6 +232,7 @@ kubectl delete --all pods --namespace default
 
 --Delete/stop all kubernetis pods
 kubectl delete --all deployments
+kubectl delete -f <app.yaml>
 
 -- Siege (TESTE CARGA)
 Instalar siege load test (siege-windows)

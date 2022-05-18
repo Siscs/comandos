@@ -1,0 +1,55 @@
+
+------------------------------
+¤ Comandos Googcle Cloud GCP
+------------------------------
+
+Install google Cli SDK
+
+
+-- Inicializar shell
+
+gcloud init
+gcloud container clusters create <cluster_name>
+gcloud container clusters get-credentials <cluster_name>
+gcloud container clusters get-credentials <cluster_name> --zone <zone_name> --project (project_name>
+gcloud config set project dtz-dev
+gcloud config set compute/zone southamerica-east1-c
+
+
+-- set project shell
+gcloud config set project dtz-uat
+gcloud config set project dtz-dev
+
+-- cluster de DEV
+gcloud container clusters get-credentials dev --zone southamerica-east1-c --project dtz-dev-219021
+
+-- cluster de UAT
+gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dtz-uat
+
+-- cluster de PROD
+gcloud container clusters get-credentials gke-production --region southamerica-east1 --project dtz-production
+
+gcloud container clusters get-credentials gke-production-01 --region southamerica-east1 --project dtz-production
+
+
+
+
+-- comandos
+
+gcloud auth list
+gcloud config set project <project_name>
+gcloud container get-server-config
+gcloud config list
+
+[accessibility]
+screen_reader = False
+[compute]
+zone = southamerica-east1-c
+[core]
+account = cesar.silva@dotz.com
+disable_usage_reporting = False
+project = dotz-dev
+
+
+
+

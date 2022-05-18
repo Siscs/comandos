@@ -65,6 +65,16 @@ public void Enter_Room_Test()
 	//                    default(CancellationToken)), Times.Once);
 }
 		
+
+=======================		
+#SERVICEPROVIDER
+=======================
+
+var services = new ServiceCollection();
+services.AddMemoryCache();
+
+_mockMemoryCache = services.BuildServiceProvider().GetService<IMemoryCache>();
+
 		
 
 =======================		
@@ -96,8 +106,6 @@ dotnet reportgenerator [options]
 
 
 dotnet tool run reportgenerator 
-
-
 
 
 
