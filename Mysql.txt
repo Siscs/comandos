@@ -3,6 +3,7 @@ MYSQL COMMANDS
 #referencias
 https://www.w3resource.com/mysql/mysql-functions-and-operators.php
 https://www.delftstack.com/howto/mysql/
+https://www.mysqltutorial.org/mysql-variables/
 
 ------------------
 #DATE
@@ -134,3 +135,21 @@ set @altercmd = (SELECT IF( EXISTS(
 PREPARE command FROM @altercmd;
 EXECUTE command;
 DEALLOCATE PREPARE command;  
+
+--------------------------
+VARIABLES
+--------------------------
+
+SET @counter := 100;
+SELECT @variable_name := value;
+SELECT @msrp:=MAX(msrp) FROM products;
+SELECT @id:=LAST_INSERT_ID();
+
+
+SET @path := "VALOR";
+
+-- URL inicio custom ngrok
+UPDATE TB_PARAMETRO 
+SET valor = CONCAT("https://", @path, ".ngrok.io/totvs-pdv-gateway/api/default/v1/sales/optIn")
+WHERE grupo = "InicioVendaCustom01" AND parametro = "URL";
+

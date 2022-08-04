@@ -17,13 +17,17 @@ gcloud config set project dtz-dev
 
 -- cluster de DEV
 gcloud container clusters get-credentials dev --zone southamerica-east1-c --project dtz-dev-219021
+gcloud container clusters get-credentials develop --zone us-central1 --project dotz-dev-219021
 
 -- cluster de UAT
-gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dtz-uat
+gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dotz-uat
+
+
+-- cluster accounts (teste)
+gcloud container clusters get-credentials accounts --zone southamerica-east1-a --project dev-219021
 
 -- cluster de P
 gcloud container clusters get-credentials gke-production --region southamerica-east1 --project dtz-production
-
 gcloud container clusters get-credentials gke-production-01 --region southamerica-east1 --project dtz-production
 
 ------------------------------
@@ -262,3 +266,6 @@ kubectl get services -n pos -o json
 https://kuber.host/docs/kubectl_tricks
 https://minikube.sigs.k8s.io/docs/drivers/virtualbox/
 
+JKS_USE_NEWRELIC_LOG='False'
+
+export JKS_USE_NEWRELIC_LOG='True'

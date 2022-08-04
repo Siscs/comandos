@@ -1,0 +1,60 @@
+
+-- Ferramentas
+
+Docker
+Postman
+Soap-ui
+ngrok - url to localhost
+Tye - executar microservicos (microsoft tye)
+
+BrowserStack - Simular emulatores mobile
+Figma - ui
+reqbin - Get/Post/Put online
+RequestBin - Url para teste de webhooks
+Pushover - push notification
+UltraHook - Receive webhooks on localhost
+
+
+https://enrg45r212k6td8.m.pipedream.net
+
+-- terceiros
+Clicksign/Docusign  - assinaturas de documentos
+conductor (dock.tech) - banco digital /cards / acquiring / risk & compliance
+			Pagamento de conta
+			Pagto instantaneo(pix) 
+			Transferência doc/ted
+			Geração de boletos
+			Recargas/vouchers
+			Empréstimos pessoais
+			Conta remunerada
+
+Elmah.io - Errors logs		
+Infobip - sms/whatsapp/email (comunicações com fluxo)
+Konduto - anti-fraude
+Neurotech - analide de crédito
+New relic - logs
+page.me - gateway pagamento
+Pdf.co - Pdf data extraction, spreadsheet, barcodes
+Vindi - gestão de planos(assinatura) de pagamentos recorrentes
+tinyUrl - 
+Twilio - sms
+Twilio sendgrid - envio emails
+Unico.io -  Biometria facial e reconhecimento facial
+
+https://pipedream.com/
+
+
+AWS DynamoDB, AWS EC2, AWS SQS, AWS S3
+Diferencial: Conhecimento em AWS com arquitetura serverless (Lambdas, SQS, SNS, DynamoDB, etc.), Testes integrados/performance, Conceitos Devops, Javascript e React.JS;
+
+
+
+
+
+
+
+
+
+
+
+

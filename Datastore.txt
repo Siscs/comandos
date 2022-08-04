@@ -1,0 +1,140 @@
+
+-- URL DOCS GCP .NET
+https://cloud.google.com/dotnet/
+https://cloud.google.com/dotnet/docs/reference
+https://github.com/GoogleCloudPlatform/dotnet-docs-samples/blob/main/datastore/api/TaskList/Program.cs
+
+// 1.060 - 
+// 1.095 - 
+
+// TODO: validar documento
+
+// TODO: buscar claim do documento
+
+var compositeFilter = new CompositeFilter() { Op = CompositeFilter.Types.Operator.And };
+
+compositeFilter.Filters.Add(Filter.Equal("Type", "document"));
+compositeFilter.Filters.Add(Filter.Equal("Value", document));
+
+//var propertyFilter = new PropertyFilter 
+//{ 
+//    Op = PropertyFilter.Types.Operator.Equal,
+//    Property = new PropertyReference() { Name = "document" },
+//    Value = new Value { StringValue = "12345" }
+//};
+
+var filter = new Filter() { CompositeFilter = compositeFilter };
+
+//var query = new Query("ClientClaim")
+//{
+//    Filter = filter,
+//    Limit = 1
+//    //,Projection =
+//    //{
+//    //    new Projection("__key__")
+//    //}
+//};
+
+//var result = await _singleRepository.Db.RunQueryAsync(query);
+
+//if (result.Entities.Count > 0)
+//    return result.Entities[0].Key;
+
+
+var resultClaim = await _singleRepository.ReadAsync<ClientClaim>(filter);
+
+// Properties must be indexed on datastore
+var resultClaim2 = await _singleRepository
+	.ReadAsync<ClientClaim>(x => x.Type == "document" && x.Value == document);
+
+//var resultClaim3 = await _singleRepository.ReadRawEntityAsync(Key.)
+
+
+
+// TODO: buscar clientid atraves da chave key
+
+// TODO: Validar document, scope
+
+// TODO: Validar caso retorne +1 retornar erro
+
+
+return SuccessData(new { ClientId = "X", Secret = "X", Name = "Nome" });
+
+
+public async Task<ResultData> GetClientIdByDocumentAsync(string document)
+{
+	if(!Extensions.DocumentExtension.IsDocument(document))
+		return ErrorData<AccountsAPIAdminError>(AccountsAPIAdminError.ClientId_Get_400_Get_Invalid_Document);
+
+	// Properties must be indexed on datastore
+	var resultClaims = await _singleRepository
+	.ReadAsync<ClientClaim>(x => x.Type == "document" && x.Value == document);
+
+	if (!resultClaims.Any())
+		return SuccessData();
+	
+	var ancestorKey = resultClaims?.First().EntityKey?.GetParent();
+
+	//var result = await _singleRepository.ReadAsync<IDS_ClientEntity>("NI66MS5MP34PK9C");
+	// var result = await _singleRepository.ReadAsync<IDS_ClientEntity>(ancestorKey);
+
+	// TODO: buscar client
+	// ReadClientWithAncestorsFirstOrDefault
+	// ReadClientWithAncestorsFirstOrDefaultAsync
+
+	var result = await _singleRepository.ReadClientWithAncestorsFirstOrDefaultAsync(key: ancestorKey);
+
+	// TODO: Validar document, scope
+
+	// TODO: Validar caso retorne +1 retornar erro
+
+	return SuccessData(new 
+	{ 
+		ClientId = result.ClientId, 
+		Secret = result.ClientSecrets[0].Description, 
+		Name = result.ClientName 
+	});
+
+}
+
+// completo
+public async Task<ResultData> GetClientIdByDocumentAsync(string document)
+{
+	if(!DocumentExtension.IsDocument(document))
+		return ErrorData<AccountsAPIAdminError>(AccountsAPIAdminError.ClientId_Get_400_Get_Invalid_Document);
+
+	// Properties must be indexed on datastore
+	var resultClaims = await _singleRepository
+	.ReadAsync<ClientClaim>(x => x.Type == "document" && x.Value == document);
+
+	if (!resultClaims.Any())
+		return SuccessData();
+
+	var listClientIds = new List<IDS_ClientEntity>();
+
+	foreach (var clientClaim in resultClaims)
+	{
+		var ancestorKey = clientClaim?.EntityKey?.GetParent();
+
+		if(ancestorKey != null)
+		{
+			var result = await _singleRepository.ReadClientWithAncestorsFirstOrDefaultAsync(key: ancestorKey);
+			if (result != null && !listClientIds.Any(x => x.Id == result.Id))
+				listClientIds.Add(result);
+		}
+	}
+
+	listClientIds = listClientIds
+		.Where(c => c.AllowedScopes.Any(s => s.Scope.ToLower() == "dotzexp.api"))
+		.ToList();
+
+	if(listClientIds.Count > 1)
+		return ErrorData<AccountsAPIAdminError>(AccountsAPIAdminError.ClientId_Get_409_Get_More_Than_One_Document_Claim_Configured);
+
+	return SuccessData(new 
+	{ 
+		ClientId = listClientIds.First().ClientId, 
+		Secret = listClientIds.First().ClientSecrets?.First()?.Description, 
+		Name = listClientIds.First().ClientName 
+	});
+}

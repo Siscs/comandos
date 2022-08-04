@@ -1,0 +1,35 @@
+private ResultData<T> ReturnErrors<T>(HttpResult<T> response) where T : class
+{
+	ResultData<T> resultData = ErrorData<T>(MfaControllerErrors.Wallet_Get_409_Erro_Call_Accounts_Api);
+
+	if (!string.IsNullOrEmpty(response.Raw))
+	{
+		var errorResponse = JsonConvert.DeserializeObject<ErrorResponseDetail>(response.Raw);
+
+		resultData = errorResponse?.Code switch
+		{
+			CODE_FAILED_MESSENGER_COMUNICATE or 
+			CODE_FAILED_MESSENGER_COMUNICATE_POST => ErrorData<T>(MfaControllerErrors.Mfa_Put_409_FailedCommunicateMessenger),
+
+			CODE_EMPTY_DOCUMENT or 
+			CODE_EMPTY_DOCUMENT_POST or 
+			CODE_INVALID_DOCUMENT => ErrorData<T>(MfaControllerErrors.Mfa_Put_400_Empty_Document),
+
+			CODE_FAILED_INVALID_TRANSACTION => ErrorData<T>(MfaControllerErrors.Mfa_Confirm_404_InvalidTransaction),
+
+			CODE_INVALID_IDENTIFIER_TYPE      or 
+			CODE_INVALID_IDENTIFIER_TYPE_POST or 
+			CODE_EMPTY_IDENTIFIER => ErrorData<T>(MfaControllerErrors.Mfa_Put_400_Invalid_IdentifierType),
+
+			CODE_IDENTIFIER_NOT_FOUND or
+			CODE_IDENTIFIER_NOT_FOUND_POST => ErrorData<T>(MfaControllerErrors.Mfa_Put_404_Identifier_NotFound),
+
+			CODE_BLOCKED_USER or
+			CODE_BLOCKED_USER_POST => ErrorData<T>(MfaControllerErrors.Mfa_Put_409_BlockedUser),
+
+			_ => ErrorData<T>(MfaControllerErrors.Wallet_Get_409_Erro_Call_Accounts_Api)
+		};
+	}
+
+	return resultData;
+}

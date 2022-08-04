@@ -1,0 +1,141 @@
+// datatable read
+
+public static class DatasetExtensions
+{
+	public static T ReadDataTableColumn<T>(this DataRow dtRow, string columnName)
+	{
+		if (dtRow[columnName] == DBNull.Value)
+			return default(T);
+
+		return (T)Convert.ChangeType(dtRow[columnName], typeof(T));
+	}
+}
+
+// ler
+foreach (DataRow dtRow in dataTable.Rows)
+{
+	list.Add(new PaidSalesResponse
+	{
+		SaleId = dtRow.ReadDataTableColumn<int>("venda_id"), 
+		ClientId = dtRow.ReadDataTableColumn<int>("cliente_id"),
+		ClientDocument = dtRow.ReadDataTableColumn<string>("cliente_cnpj"), 
+		GenerateDate = dtRow.ReadDataTableColumn<DateTime>("data_geracao"), 
+		ExpirateDate = dtRow.ReadDataTableColumn<DateTime>("data_vencimento"), 
+		PaidDate = dtRow.ReadDataTableColumn<DateTime>("data_pagamento"), 
+		ChargedValue = dtRow.ReadDataTableColumn<decimal>("valor_cobrado"), 
+		ReceivedValue = dtRow.ReadDataTableColumn<decimal>("valor_recebido"), 
+		DotzQuantity = dtRow.ReadDataTableColumn<int>("qtd_dotz"), 
+		PaidMethod = dtRow.ReadDataTableColumn<string>("metodo_pagamento"), 
+		PaidMethodId = dtRow.ReadDataTableColumn<int>("metodo_pagamento_id")
+	});
+}
+
+// UNIT TEST
+
+public class DatasetExtensionsTest
+{
+	[Theory]
+	[InlineData("Int", 1)]
+	public void ReadDataTableColumn_Must_Return_Int(string columnName, int expected)
+	{
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<int>(columnName);
+
+		result.Should().BeOfType(typeof(int));
+		result.Should().Be(expected);
+	}
+
+	[Theory]
+	[InlineData("String", "Teste")]
+	public void ReadDataTableColumn_Must_Return_String(string columnName, string expected)
+	{
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<string>(columnName);
+
+		result.Should().BeOfType(typeof(string));
+		result.Should().Be(expected);
+	}
+
+	[Theory]
+	[InlineData("DateTime")]
+	public void ReadDataTableColumn_Must_Return_DateTime(string columnName)
+	{
+		var expected = DateTime.Today;
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<DateTime>(columnName);
+
+		result.Should().Be(expected);
+	}
+
+	[Theory]
+	[InlineData("Decimal")]
+	public void ReadDataTableColumn_Must_Return_Decimal(string columnName)
+	{
+		var expected = 105.21M;
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<decimal>(columnName);
+
+		result.Should().BeOfType(typeof(decimal));
+		result.Should().Be(expected);
+	}
+
+	[Theory]
+	[InlineData("Bool")]
+	public void ReadDataTableColumn_Must_Return_Bool(string columnName)
+	{
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<bool>(columnName);
+
+		result.Should().BeTrue();
+	}
+
+	[Theory]
+	[InlineData("DBNull")]
+	public void ReadDataTableColumn_Must_Return_DbNull(string columnName)
+	{
+		var dataRow = GenerateDataRow();
+
+		var result = dataRow.ReadDataTableColumn<string>(columnName);
+
+		result.Should().Be(null);
+	}
+
+	private DataRow GenerateDataRow()
+	{
+		var dataTable = GenerateTestDatable();
+		var dataRow = dataTable.NewRow();
+
+		var intValue = 1;
+		var stringValue = "Teste";
+		var dateTimeValue = DateTime.Today;
+		var decimalValue = 105.21M;
+		var boolValue = true;
+		var dbNullValue = DBNull.Value;
+
+		dataRow["Int"] = intValue;
+		dataRow["String"] = stringValue;
+		dataRow["DateTime"] = dateTimeValue;
+		dataRow["Decimal"] = decimalValue;
+		dataRow["Bool"] = boolValue;
+		dataRow["DbNull"] = dbNullValue;
+
+		return dataRow;
+	}
+
+	private DataTable GenerateTestDatable()
+	{
+		var dataTable = new DataTable();
+		dataTable.Columns.Add(new DataColumn("Int", typeof(int)));
+		dataTable.Columns.Add(new DataColumn("String", typeof(string)));
+		dataTable.Columns.Add(new DataColumn("DateTime", typeof(DateTime)));
+		dataTable.Columns.Add(new DataColumn("Decimal", typeof(decimal)));
+		dataTable.Columns.Add(new DataColumn("Bool", typeof(bool)));
+		dataTable.Columns.Add(new DataColumn("DbNull", typeof(string)));
+		return dataTable;
+	}
+}

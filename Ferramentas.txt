@@ -1,0 +1,71 @@
+
+-- Ferramentas
+
+
+Api Gateway - Kong / Zuul
+BrowserStack - Simular emulatores mobile
+Docker
+Figma - ui
+ngrok - url to localhost
+Postman - Apiu Tests
+Pushover - push notification
+reqbin - Get/Post/Put online
+RequestBin - Url para teste de webhooks
+Soap-ui
+Tye - executar microservicos (microsoft tye)
+UltraHook - Receive webhooks on localhost
+
+
+https://enrg45r212k6td8.m.pipedream.net
+
+-- terceiros
+Clicksign/Docusign  - assinaturas de documentos
+conductor (dock.tech) - banco digital /cards / acquiring / risk & compliance
+			Pagamento de conta
+			Pagto instantaneo(pix) 
+			Transferência doc/ted
+			Geração de boletos
+			Recargas/vouchers
+			Empréstimos pessoais
+			Conta remunerada
+
+Elmah.io - Errors logs		
+Infobip - sms/whatsapp/email (comunicações com fluxo)
+Konduto - anti-fraude
+Neurotech - analide de crédito
+New relic - logs
+page.me - gateway pagamento
+Pdf.co - Pdf data extraction, spreadsheet, barcodes
+Vindi - gestão de planos(assinatura) de pagamentos recorrentes
+tinyUrl - 
+Twilio - sms
+Twilio sendgrid - envio emails
+Unico.io -  Biometria facial e reconhecimento facial
+
+https://pipedream.com/
+
+
+AWS DynamoDB, AWS EC2, AWS SQS, AWS S3
+Diferencial: Conhecimento em AWS com arquitetura serverless (Lambdas, SQS, SNS, DynamoDB, etc.), Testes integrados/performance, Conceitos Devops, Javascript e React.JS;
+
+
+API Gateway:
+
+    Kong
+    Zuul
+
+Observabilidade:
+
+    Grafana, Kibana – visualização dos dados em forma gráfica
+    Prometheus – coleta de métricas
+    Zipkin e Jaeger – tracing de requisições
+    ElasticSearch – armazenamento de logs
+
+Redis
+
+
+
+
+
+
+
