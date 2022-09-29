@@ -4,16 +4,19 @@
 
 Api Gateway - Kong / Zuul
 BrowserStack - Simular emulatores mobile
-Docker
+Docker - Container
 Figma - ui
 ngrok - url to localhost
-Postman - Apiu Tests
+Postman - Api Tests
 Pushover - push notification
 reqbin - Get/Post/Put online
 RequestBin - Url para teste de webhooks
+Siege - Teste fe performance
 Soap-ui
 Tye - executar microservicos (microsoft tye)
 UltraHook - Receive webhooks on localhost
+
+
 
 
 https://enrg45r212k6td8.m.pipedream.net
@@ -33,7 +36,6 @@ Elmah.io - Errors logs
 Infobip - sms/whatsapp/email (comunicações com fluxo)
 Konduto - anti-fraude
 Neurotech - analide de crédito
-New relic - logs
 page.me - gateway pagamento
 Pdf.co - Pdf data extraction, spreadsheet, barcodes
 Vindi - gestão de planos(assinatura) de pagamentos recorrentes
@@ -49,19 +51,63 @@ AWS DynamoDB, AWS EC2, AWS SQS, AWS S3
 Diferencial: Conhecimento em AWS com arquitetura serverless (Lambdas, SQS, SNS, DynamoDB, etc.), Testes integrados/performance, Conceitos Devops, Javascript e React.JS;
 
 
-API Gateway:
-
+==> API Gateway:
     Kong
     Zuul
 
-Observabilidade:
+==> Banco de Dados
 
-    Grafana, Kibana – visualização dos dados em forma gráfica
-    Prometheus – coleta de métricas
-    Zipkin e Jaeger – tracing de requisições
-    ElasticSearch – armazenamento de logs
 
+InfluxDB - O InfluxDB é um banco de dados de série temporal de código aberto 
+	desenvolvido pela empresa InfluxData.
 Redis
+
+
+==> Observabilidade:
+
+Ansible é uma ferramenta de TI de código aberto para gerenciar, automatizar, configurar servidores 
+	e, implantar aplicativos, a partir de uma localização central. Ele inclui sua própria linguagem 
+	declarativa para descrever a configuração do sistema.
+
+ElasticSearch – Elasticsearch é um mecanismo de busca baseado na biblioteca Lucene. 
+	Ele fornece um mecanismo de pesquisa de texto completo distribuído com capacidade 
+	para vários locatários com uma interface da web HTTP e documentos JSON sem esquema.
+
+Grafana - Grafana é uma aplicação web de análise de código aberto multiplataforma e 
+	visualização interativa da web. Ele fornece tabelas, gráficos e alertas para a Web 
+	quando conectado a fontes de dados suportadas. É expansível através de um sistema de plug-in.
+
+Logstash - O Logstash é um pipeline de processamento de dados leve, de código aberto 
+	e no lado do servidor que permite coletar dados de uma variedade de fontes, 
+	transformá-los dinamicamente e enviá-los ao destino desejado.
+
+Kibana - O Kibana é um plugin de visualização de dados de fonte aberta para o Elasticsearch. 
+	Ele fornece recursos de visualização em cima do conteúdo indexado em um cluster Elasticsearch. 
+	Os usuários podem criar gráficos de barra, linha e dispersão, ou gráficos e 
+	mapas de torta em cima de grandes volumes de dados
+	
+Nagios - Nagios é uma popular aplicação de monitoramento de rede de código aberto distribuída 
+	sob a licença GPL. Ele pode monitorar tanto hosts quanto serviços, alertando quando ocorrerem 
+	problemas e também quando os problemas são resolvidos.
+
+New relic - logs
+
+Prometheus – Prometheus é um aplicativo de software gratuito usado para monitoramento e 
+	alerta de eventos. Ele grava métricas em tempo real em um banco de dados de 
+	séries temporais criado usando um modelo de recepção HTTP, com consultas flexíveis e 
+	alertas em tempo real. 
+
+O Terraform é uma ferramenta de software de código aberto, infraestrutura como código, 
+	criada pela HashiCorp. Os usuários definem e fornecem infraestrutura de data center 
+	usando uma linguagem de configuração declarativa conhecida como 
+	HashiCorp Configuration Language ou, opcionalmente, JSON.
+	
+Zabbix - O Zabbix é uma ferramenta de software de código aberto para monitorar a 
+	infraestrutura de TI, como redes, servidores, máquinas virtuais e serviços em nuvem. 
+	O Zabbix coleta e exibe métricas básicas.
+
+Zipkin e Jaeger – tracing de requisições
+
 
 
 
