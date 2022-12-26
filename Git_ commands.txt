@@ -116,6 +116,10 @@ git clone url_repositorio_remoto nome_repositorio  #Cria a pasta e o repositorio
 
 #UNDO EM ARQUIVO (ROLLBACK)
 git checkout <arquivo> 	#undo arquivo (antes do git add (stage))
+git checkout -f # Undo todos modificados
+
+#UNDO EM ARQUIVOS NOVOS (UNTRACKED)
+git clean -fd
 
 #UNDO ARQUIVO EXCLUIDO
 git rm <arquivo>

@@ -1,0 +1,8 @@
+
+ngrok http https://localhost:port --host-header=rewrite
+
+
+https://famous-views-nail-143-0-48-196.loca.lt/totvs-pdv-gateway/api/default/v1/sales/exchange
+
+
+npx lt -p 5000

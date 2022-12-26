@@ -26,6 +26,9 @@ L - LSP Liskov substitution principle (subclasses devem se substituida pela supe
 	- Solução
 		- Criar outra superclasse (paralelograma) recebendo parametros no construtor) e validando
 			no caso quadrado tem que ter area igual.
+		Exemplo classe desconto (virtual)
+
+
 I - ISP Interface segregation (clientes não devem ser forçados a depender de métodos que não usam)
 	- Violação
 		- Utilizar uma unica interface com metodos não utilizados pela classe

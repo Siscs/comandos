@@ -1,0 +1,165 @@
+-- ELASTIC SEARCH CONFIG
+
+Changed password for user apm_system
+PASSWORD apm_system = qtx2UabJ2gA7vMFVWGOx
+
+Changed password for user kibana_system
+PASSWORD kibana_system = daoq10RdJTLlpRhVWhVE
+
+Changed password for user kibana
+PASSWORD kibana = daoq10RdJTLlpRhVWhVE
+
+Changed password for user logstash_system
+PASSWORD logstash_system = LFWgDh20z1TgauFqp5Cg
+
+Changed password for user beats_system
+PASSWORD beats_system = 0ILv5odTWguk7gQoKafJ
+
+Changed password for user remote_monitoring_user
+PASSWORD remote_monitoring_user = 4NEIm2wQ6ZSV5KCvZvOV
+
+Changed password for user elastic
+PASSWORD elastic = r6ifAx_dgM0nJfBeBOLM
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> Elasticsearch security features have been automatically configured!
+-> Authentication is enabled and cluster connections are encrypted.
+
+->  Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+  r6ifAx_dgM0nJfBeBOLM
+
+->  HTTP CA certificate SHA-256 fingerprint:
+  a12eebf054a83a58ebb22aa8d96369cbe98991c682bfe9b72f81aa818e55ec00
+
+->  Configure Kibana to use this cluster:
+* Run Kibana and click the configuration link in the terminal when Kibana starts.
+* Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+  eyJ2ZXIiOiI4LjQuMiIsImFkciI6WyIxNzIuMTguMTEyLjE6OTIwMCJdLCJmZ3IiOiJhMTJlZWJmMDU0YTgzYTU4ZWJiMjJhYThkOTYzNjljYmU5ODk5MWM2ODJiZmU5YjcyZjgxYWE4MThlNTVlYzAwIiwia2V5IjoiS1RfUWc0TUJqNVdyd0FqUWZicFQ6UEZPNDZUd0lSTUtTcUZ3bktIYVB5USJ9
+
+->  Configure other nodes to join this cluster:
+* On this node:
+  - Create an enrollment token with `bin/elasticsearch-create-enrollment-token -s node`.
+  - Uncomment the transport.host setting at the end of config/elasticsearch.yml.
+  - Restart Elasticsearch.
+* On other nodes:
+  - Start Elasticsearch with `bin/elasticsearch --enrollment-token <token>`, using the enrollment token that you generated.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+http://127.0.0.1:5601/?code=572326
+
+
+
+
+
+curl -X GET "localhost:9200/my-index/_settings?flat_settings=true&include_defaults=true&pretty"
+curl -X GET "localhost:9200/_cluster/settings?flat_settings=true&include_defaults=true&pretty"
+
+
+
+#cluster.routing.allocation.disk.threshold_enabled: true
+#cluster.routing.allocation.disk.watermark.low: 5gb
+#cluster.routing.allocation.disk.watermark.high: 2gb
+
+curl -X PUT "localhost:9200/_cluster/settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": "90%"
+    "cluster.routing.allocation.disk.watermark.high": "98%"
+    
+  }
+}
+'
+
+curl -X PUT "localhost:9200/_cluster/settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.high": "98%",
+    "cluster.routing.allocation.disk.watermark.low": "90%",
+  }
+}
+'
+
+curl -X PUT "localhost:9200/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index.number_of_replicas": 1
+}
+'
+
+curl -XPUT 'http://localhost:9200/_cluster/settings' -H 'Content-Type: application/json' -d '{
+"transient" : {
+"cluster.routing.allocation.disk.watermark.flood_stage" : "99%",
+"cluster.routing.allocation.disk.watermark.high" : "95%"
+}
+}'
+
+curl -XPUT 'http://localhost:9200/_cluster/settings' -H 'Content-Type: application/json' -d '{
+"transient" : {
+"cluster.routing.allocation.disk.threshold_enabled" : false
+}
+}'
+
+
+curl -XPUT 'http://localhost:9200/_cluster/settings’ -H ‘Content-Type: application/json’ -d ‘{ 
+“transient” : { 
+“cluster.routing.allocation.disk.threshold_enabled” : false } 
+}’ ` *
+
+
+-- REFERENCIAS
+-- .net 3.1 Com ElasticCloud
+https://hgmauri.medium.com/utilizando-o-elasticsearch-com-nest-no-net-core-3-1-cd83d559dc5c
+https://www.steps2code.com/post/how-to-use-elasticsearch-in-csharp
+
+https://stackoverflow.com/questions/31453495/how-to-read-appsettings-values-from-a-json-file-in-asp-net-core
+
+https://henriquemauri.net/escrevendo-queries-no-elasticsearch-utilizando-net-e-nest/
+
+https://discuss.elastic.co/t/nest-product-check-call-fails-every-time/306348
+
+https://www.elastic.co/guide/en/elasticsearch/client/net-api/7.17/nest-getting-started.html
+
+elasticsearch .net c#
+
+
+configs
+https://stackoverflow.com/questions/31453495/how-to-read-appsettings-values-from-a-json-file-in-asp-net-core
+
+https://dev.to/masanori_msl/aspnet-core-get-values-from-iconfiguration-1b4p
+
+
+.NET PACKAGES
+
+Install-Package Elasticsearch.Net
+Install-Package NEST -Version 7.17.4
+
+
+{
+  "id": 1022,
+  "name": "Nome de teste",
+  "document": "3322232",
+  "address": {
+    "type": 5,
+    "street": "Nome Rua",
+    "number": "55",
+    "city": "Jundiai",
+    "postalCode": "1232322"
+  }
+}
+
+PRIVATE CLI
+PUBLIC NOSSA
+
+-> CLIENTE GERA RSA - PEM
+-> CAMPO SIGN - 
+
+
+CHAVE RSA (CHAVE  PUBLICA 
+
+AES
+
+
+
+https://www.heapup.com.br/home.php
+

@@ -1,0 +1,5 @@
+nuget push IntegrationGateway.SharedProject.1.0.0.nupkg "dotz" -Source http://nexus.dotznext.com/repository/nuget/ -Apikey '16163784-be81-3ab9-8a7e-25cb645477a5'
+
+
+
+http://nexus.dotznext.com/#browse/browse:nuget

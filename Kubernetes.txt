@@ -20,7 +20,7 @@ gcloud container clusters get-credentials dev --zone southamerica-east1-c --proj
 gcloud container clusters get-credentials develop --zone us-central1 --project dotz-dev-219021
 
 -- cluster de UAT
-gcloud container clusters get-credentials uat --zone southamerica-east1-a --project dotz-uat
+gcloud container clusters get-credentials cluster-uat --zone southamerica-east1-a --project dotz-uat
 
 
 -- cluster accounts (teste)
@@ -259,6 +259,10 @@ kubectl apply -f deployment-staging.yaml
 kubectl get hpa -n pos --field-selector=metadata.name==pos-api-private -o jsonpath={.items[*].metadata.name}
 kubectl get services -n pos --field-selector=metadata.name==pos-api-private -o jsonpath={.items[*].metadata.name}
 kubectl get services -n pos -o json
+
+
+================= editar secrets
+kubectl edit secrets -n <namespace>
 
 
 ================= referências
