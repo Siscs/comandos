@@ -1,0 +1,57 @@
+@echo off
+REM Pacote necessario coverlet.msbuild no projeto de testes
+REM Necessario reportgenerator tool instalado 
+REM dotnet tool install -g dotnet-reportgenerator-globaltool
+rem cd "C:\Dados\Projetos\SCN - Sistema Comunicacao Notificacao"
+dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=c:\dados\tests\notifications\
+rem reportgenerator -reports:".\tests\notifications\coverage.cobertura.xml" -targetdir:"c:\dados\temp\coverage" -reporttypes:Html
+rem start c:\dados\temp\coverage\index.html
+rem cd c:\dados
+
+
+-- SINGLE PROJECT
+@echo off
+REM Pacote necessario coverlet.msbuild no projeto de testes
+REM Necessario reportgenerator tool instalado 
+REM dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=..\
+reportgenerator -reports:"tests\coverage.cobertura.xml" -targetdir:"c:\temp\coverage" -reporttypes:Html
+start c:\temp\coverage\index.html
+
+-- MULTIPLOS PROJETOS
+@echo off
+REM Arquivo responsável por executar a cobertura de testes para o projeto
+REM Pacote necessario coverlet.msbuild no projeto de testes
+REM Necessario reportgenerator tool instalado 
+REM dotnet tool install -g dotnet-reportgenerator-globaltool
+
+rem dotnet test Solution.sln -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=..\ 
+dotnet test Yamaha.Notifications.sln -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura
+reportgenerator -reports:"**\coverage.cobertura.xml" -targetdir:"c:\temp\coverage" -reporttypes:Html
+start c:\temp\coverage\index.html
+
+--OUTROS EXEMPLOS
+dotnet test {solution_filename.sln} --logger:trx --results-directory ../TestResults \
+   "/p:CollectCoverage=true" \
+   "/p:CoverletOutput=../TestResults/" \
+   "/p:MergeWith=../TestResults/coverlet.json" \
+   "/p:CoverletOutputFormat=\"json,cobertura\"" 
+   
+reportgenerator -reports:<base-directory>/**/coverage.cobertura.xml -targetdir:<output-directory>/CoverageReport -reporttypes:Cobertura   
+
+--REFERENCIAS
+https://stackoverflow.com/questions/53255065/dotnet-unit-test-with-coverlet-how-to-get-coverage-for-entire-solution-and-not
+https://bolorundurowb.dev/posts/35/how-to-generate-net-core-code-coverage-with-coverlet
+https://www.jamescroft.co.uk/combining-multiple-code-coverage-results-in-azure-devops/
+https://microsoft.github.io/botframework-solutions/solution-accelerators/tutorials/enable-continuous-integration/csharp/3-create-yaml/
+https://blog.bitscry.com/2022/09/07/creating-a-code-coverage-report-for-multiple-projects/
+
+Assert.Null(result);
+
+Assert.False(result.IsValid);
+Assert.True(result.IsValid);
+
+Assert.IsType<Communication>(result);
+Assert.Equal("11", result.Errors[0].ErrorCode);
+
+
